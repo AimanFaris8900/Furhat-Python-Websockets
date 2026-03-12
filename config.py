@@ -15,4 +15,10 @@ FURHAT_LAN_URL = os.getenv("FURHAT_LAN_URL")
 
 FURHAT_WS = os.getenv("FURHAT_WS")
 
+#==== OLLAMA HTTP =======
+
 OLLAMA_URL = os.getenv("OLLAMA_URL")
+
+#==== OLLAMA SETUP ====
+
+MODEL = os.getenv("MODEL")

@@ -1,10 +1,10 @@
 import httpx
 import asyncio
-from config import OLLAMA_URL
+from config import OLLAMA_URL, MODEL
 
 async def ollama_http(prompt: str):
     payload = {
-        "model": "llama3.2:3b",
+        "model": MODEL,
         "prompt": prompt,
         "stream": False
     }
