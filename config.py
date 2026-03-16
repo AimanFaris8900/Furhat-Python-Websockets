@@ -15,9 +15,14 @@ FURHAT_LAN_URL = os.getenv("FURHAT_LAN_URL")
 
 FURHAT_WS = os.getenv("FURHAT_WS")
 
+#==== FURHAT CONFIG SETUP ======
+
+LANGUAGE = "en-US"
+
 #==== OLLAMA HTTP =======
 
 OLLAMA_URL = os.getenv("OLLAMA_URL")
+OLLAMA_LOCAL = os.getenv("OLLAMA_LOCAL")
 
 #==== OLLAMA SETUP ====
 

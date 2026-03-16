@@ -1,3 +1,4 @@
 httpx
+ollama
 python-dotenv
 furhat-realtime-api
