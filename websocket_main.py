@@ -37,10 +37,7 @@ async def connect_to_server():
                                 if data["type"] == "response.hear.end":
                                     response = await ollama_http(data["text"])
 
-                                    await websocket.send(json.dumps({
-                                        "type": "request.speak.text",
-                                        "text": str(response)
-                                    }))
+                                    await furhat_speak(websocket, str(response))
                                 
                                 if data["type"] == "response.listen.end":
                                     if data["cause"] == "silence_timeout":
@@ -60,10 +57,15 @@ async def furhat_startup(websocket: ClientConnection):
     # initiate furhat attention
     await websocket.send(json.dumps({"type": "request.attend.user"}))
 
+
     # make furhat speak at startup
+    text = "Huarghh Good Morning. Starting Up!"
+    await furhat_speak(websocket, text)
+
+async def furhat_speak(websocket: ClientConnection, text: str):
     await websocket.send(json.dumps({
         "type": "request.speak.text",
-        "text": "Huarghh Good Morning. Starting Up!"
+        "text": text
     }))
 
 if __name__ == "__main__":
