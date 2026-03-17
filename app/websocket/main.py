@@ -1,14 +1,14 @@
 import asyncio
 import websockets
 import json
+import random
 from websockets.exceptions import ConnectionClosed
 from websockets import ClientConnection
 from config import FURHAT_WS, LANGUAGE
-from app.ollama.ollama_handler import ollama_http
 from app.ollama.ollama_client import ollama_prompt
 
 user_stat = {
-    "stat" : "nobody"
+    "stat" : "0"
 }
 
 # FUNC: Connect with Furhat through websocket
@@ -17,9 +17,6 @@ async def connect_to_server():
         try:
             await furhat_startup(websocket)
             await furhat_speak(websocket, "How can I help you today?")
-
-
-            asyncio.sleep(5)
 
             while True:
                 data = await websocket.recv()
@@ -42,7 +39,7 @@ async def connect_to_server():
 
                             # update user presence
                             update_stat(data)
-                            print("USER STAT UPDATED: ", user_stat)
+                            print("USER STAT UPDATED 2nd: ", data)
 
                             if data:
                                 if data["type"] == "response.hear.end":
@@ -54,6 +51,7 @@ async def connect_to_server():
                                 if data["type"] == "response.listen.end":
                                     if data["cause"] == "silence_timeout":
                                         await furhat_start_listen(websocket)
+                                        await furhat_speak(websocket, "You seems shy huh?")
                         else:
                             await furhat_stop_listen(websocket)
                             break
@@ -70,14 +68,13 @@ async def furhat_startup(websocket: ClientConnection):
             LANGUAGE
         ]
     }))
-    
-    # initiate furhat attention
-    await websocket.send(json.dumps({"type": "request.attend.user"}))
-
 
     # make furhat speak at startup
     text = "Huarghh. Good Morning. Starting Up!"
     await furhat_speak(websocket, text)
+
+    # initiate furhat attention
+    await websocket.send(json.dumps({"type": "request.attend.user"}))
 
 # FUNC: Furhat speak handler function
 async def furhat_speak(websocket: ClientConnection, text: str):
